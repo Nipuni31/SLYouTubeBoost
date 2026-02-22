@@ -3,74 +3,69 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prediction Result</title>
-
+  <title>Prediction result</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/theme.css" rel="stylesheet">
 </head>
+<body>
 
-<body class="bg-light">
+<div class="app-container">
+  <div class="card">
+    <div class="card-body">
+      <h2 class="mb-4">Prediction result</h2>
 
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-8">
+      {% if prediction == 1 %}
+      <div class="prediction-badge high mb-4">
+        This channel is predicted as <strong>High-Performing</strong>
+      </div>
+      {% else %}
+      <div class="prediction-badge low mb-4">
+        This channel is predicted as <strong>Not High-Performing</strong>
+      </div>
+      {% endif %}
 
-      <div class="card shadow-lg border-0 rounded-4">
-        <div class="card-body p-5 text-center">
-
-          <h2 class="mb-4 text-primary">📊 Prediction Result</h2>
-
-          {% if prediction == 1 %}
-            <div class="alert alert-success fs-5">
-              ✅ This channel is predicted as <strong>High-Performing</strong>
-            </div>
-          {% else %}
-            <div class="alert alert-danger fs-5">
-              ❌ This channel is predicted as <strong>Not High-Performing</strong>
-            </div>
-          {% endif %}
-
-          <h5 class="mt-4">Probability of High Performance</h5>
-
-          <div class="progress my-3" style="height:25px;">
-            <div class="progress-bar {% if prediction==1 %}bg-success{% else %}bg-danger{% endif %}"
-                 role="progressbar"
-                 style="width: {{ probability*100 }}%;"
-                 aria-valuenow="{{ probability*100 }}"
-                 aria-valuemin="0"
-                 aria-valuemax="100">
-              {{ "%.2f"|format(probability*100) }}%
-            </div>
-          </div>
-          
-          <hr class="my-4">
-          
-          <h5>🔍 Performance Feedback</h5>
-          <p class="text-muted">{{ performance_text }}</p>
-          {% if suggestions %}
-            <h6>💡 Suggestions to Improve:</h6>
-            <ul class="list-group">
-              {% for suggestion in suggestions %}
-                <li class="list-group-item">{{ suggestion }}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-
-          <hr class="my-4">
-
-          <h5>🔍 Feature Impact (SHAP)</h5>
-          <p class="text-muted">Shows which features influenced this prediction</p>
-
-          <img src="{{ img_path }}" class="img-fluid rounded shadow-sm" alt="SHAP sample">
-
-          <div class="mt-4">
-            <a href="/" class="btn btn-outline-primary btn-lg rounded-3">
-              🔁 Try Another Prediction
-            </a>
-          </div>
-
+      <h5 class="mb-2">Probability of high performance</h5>
+      <div class="progress-wrap mb-4">
+        <div class="progress-fill {% if prediction == 1 %}high{% else %}low{% endif %}" style="width: {{ probability * 100 }}%; min-width: 2rem;">
+          {{ "%.1f"|format(probability * 100) }}%
         </div>
       </div>
 
+      <hr class="my-4">
+
+      <h4 class="mb-2">AI-based performance explanation</h4>
+      <p class="explanation-summary mb-3">{{ summary }}</p>
+
+      {% if xai_strengths %}
+      <p class="section-title">Positive contributors</p>
+      <ul class="list-impact strengths mb-4">
+        {% for s in xai_strengths %}
+        <li>{{ s }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if xai_weaknesses %}
+      <p class="section-title">Areas reducing performance</p>
+      <ul class="list-impact weaknesses mb-4">
+        {% for w in xai_weaknesses %}
+        <li>{{ w }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <hr class="my-4">
+
+      <h5 class="mb-2">Feature impact (SHAP)</h5>
+      <p class="text-muted small mb-2">Contribution of each feature to this prediction.</p>
+      <div class="shap-container">
+        <img src="{{ img_path }}" alt="SHAP values for this prediction">
+      </div>
+
+      <div class="result-actions mt-4">
+        <a href="/?reset=1" class="btn btn-outline-primary">Try another prediction</a>
+        <a href="/" class="back-link">Back to input</a>
+      </div>
     </div>
   </div>
 </div>
