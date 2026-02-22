@@ -19,12 +19,66 @@ app = Flask(__name__)
 NUM_FEATURES = ['view_count', 'subscriber_count', 'video_count', 'years_active',
                 'total_views', 'subscribers', 'growth_rate', 'engagement_proxy', 'activity_score']
 
+# 75th percentile thresholds (Top 25% benchmark)
+THRESHOLDS = {
+    "view_count": 33096238,
+    "subscriber_count": 196000,
+    "total_views": 33096238,
+    "growth_rate": 35435.94,
+    "engagement_proxy": 259.74,
+    "activity_score": 174.67
+}
+
 
 def load_model():
     if not os.path.exists(MODEL_PATH):
         raise FileNotFoundError(f"Model file not found at {MODEL_PATH}. Run the training script first.")
     return joblib.load(MODEL_PATH)
 
+def generate_suggestions(user_input, probability):
+    suggestions = []
+    strengths = []
+
+    for feature, threshold in THRESHOLDS.items():
+        value = user_input.get(feature, 0)
+
+        if value < threshold:
+            gap_percent = ((threshold - value) / threshold) * 100
+
+            if feature == "growth_rate":
+                suggestions.append(
+                    f"Increase subscriber growth rate. You are {gap_percent:.1f}% below top 25% benchmark."
+                )
+            elif feature == "engagement_proxy":
+                suggestions.append(
+                    f"Improve audience engagement (likes, comments, shares). You are {gap_percent:.1f}% below high-performance level."
+                )
+            elif feature == "activity_score":
+                suggestions.append(
+                    f"Upload more consistently. Activity score is {gap_percent:.1f}% below top performers."
+                )
+            elif feature == "view_count":
+                suggestions.append(
+                    f"Increase overall reach and visibility. View count is {gap_percent:.1f}% below top 25%."
+                )
+            elif feature == "subscriber_count":
+                suggestions.append(
+                    f"Focus on converting viewers into subscribers. Subscriber count is {gap_percent:.1f}% below benchmark."
+                )
+        else:
+            strengths.append(feature.replace("_", " ").title())
+
+    # Performance interpretation
+    if probability >= 0.9:
+        performance_text = "Your channel strongly matches top 25% Sri Lankan high-performing channels."
+    elif probability >= 0.75:
+        performance_text = "Your channel is performing well but can still improve certain metrics."
+    elif probability >= 0.5:
+        performance_text = "Your channel is moderately competitive but not consistently top-tier."
+    else:
+        performance_text = "Your channel is currently below high-performance range."
+
+    return performance_text, suggestions, strengths
 
 @app.route('/', methods=['GET'])
 def index():
@@ -113,7 +167,13 @@ def predict():
 
     print(f'Classes: {classes}, using positive index: {pos_idx}')
     print(f'Prediction: {pred}, Probability: {proba}')
+    
+    
+        # Convert X row to dictionary
+    user_dict = X.iloc[0].to_dict()
 
+    # Generate intelligent feedback
+    performance_text, suggestions, strengths = generate_suggestions(user_dict, proba)
     # compute SHAP for this single sample
     X_trans = model.named_steps['preprocessor'].transform(X)
     explainer = shap.TreeExplainer(model.named_steps['classifier'])
@@ -139,7 +199,7 @@ def predict():
     plt.savefig(os.path.join(BASE_DIR, img_path), dpi=200)
     plt.close()
 
-    return render_template('result.html', prediction=int(pred), probability=float(proba), img_path='/' + img_path)
+    return render_template('result.html', prediction=int(pred), probability=float(proba), img_path='/' + img_path, performance_text=performance_text, suggestions=suggestions, strengths=strengths)
 
 
 if __name__ == '__main__':
