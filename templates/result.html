@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Prediction Result</title>
+  </head>
+  <body>
+    <h1>Prediction Result</h1>
+    <p><strong>Predicted class:</strong> {{ 'High-Performing' if prediction==1 else 'Not High-Performing' }}</p>
+    <p><strong>Probability (positive):</strong> {{ '%.4f'|format(probability) }}</p>
+    <h2>SHAP (this sample)</h2>
+    <img src="{{ img_path }}" alt="SHAP sample" style="max-width:600px;">
+    <div style="margin-top:16px;"><a href="/">Back</a></div>
+  </body>
+</html>

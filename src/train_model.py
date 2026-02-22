@@ -9,6 +9,7 @@ from xgboost import XGBClassifier
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
+import joblib
 
 # Paths
 data_dir = r'D:\L4S1\ML\Assignment\impl\Data'
@@ -98,5 +99,10 @@ shap.summary_plot(shap_pos, X_test_trans[:100],
 plt.savefig(os.path.join(outputs_dir, 'shap_bar.png'), dpi=300, bbox_inches='tight')
 plt.close()
 
+# Save trained pipeline for serving
 print('SHAP plots SAVED!')
+model_path = os.path.join(outputs_dir, 'model_pipeline.pkl')
+joblib.dump(model, model_path)
+print(f'Model pipeline saved to: {model_path}')
+
 print('Done! Check outputs/')

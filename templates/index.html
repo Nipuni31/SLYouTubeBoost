@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Predict YouTube Channel</title>
+  </head>
+  <body>
+    <h1>Predict High-Performing Channel</h1>
+    <form action="/predict" method="post">
+      {% for f in features %}
+        <div style="margin-bottom:8px;">
+          <label for="{{f}}">{{f}}</label>
+          <input type="text" id="{{f}}" name="{{f}}" value="{{defaults[f]}}" style="width:220px;">
+        </div>
+      {% endfor %}
+      <div style="margin-top:10px;">
+        <button type="submit">Predict</button>
+      </div>
+    </form>
+    <p style="margin-top:12px;color:#666;font-size:0.9em;">Note: fields are pre-filled with median values from the training data (use these as baseline).</p>
+  </body>
+</html>
