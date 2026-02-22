@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+yt_env/
+env/
+.env
+
+# Data/models (large)
+Data/
+outputs/
+*.csv
+*.pkl
+*.joblib
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
