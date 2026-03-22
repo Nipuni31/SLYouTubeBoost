@@ -4,5 +4,9 @@ shap
 xgboost
 scikit-learn
 pandas
+numpy
 matplotlib
 seaborn
+google-api-python-client
+lightgbm
+optuna
