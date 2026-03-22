@@ -1,0 +1,10 @@
+artifact_location: file:///D:/L4S1/ML/Assignment/impl/mlruns/326539417928673074/models/m-815b308ea6874518b6c544235e942c52/artifacts
+creation_timestamp: 1774183811426
+experiment_id: '326539417928673074'
+last_updated_timestamp: 1774183875563
+model_id: m-815b308ea6874518b6c544235e942c52
+model_type: null
+name: model
+source_run_id: 8fdf0a591a1446fb91eb91d641b839e2
+status: 2
+status_message: null

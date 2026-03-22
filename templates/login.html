@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in — SLYouTubeBoost</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/theme.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-container">
+  <div class="card auth-card">
+    <div class="card-body">
+      <h2 class="mb-2">Sign in</h2>
+      <p class="text-muted mb-4">Use your account to access the channel performance predictor.</p>
+
+      {% if error %}
+      <div class="alert alert-danger text-start small mb-3" role="alert">{{ error }}</div>
+      {% endif %}
+
+      <form action="{{ url_for('auth.login') }}" method="post">
+        {% if next_url %}
+        <input type="hidden" name="next" value="{{ next_url }}">
+        {% endif %}
+        <div class="mb-3">
+          <label class="form-label" for="username">Username</label>
+          <input type="text" class="form-control" id="username" name="username" autocomplete="username" required autofocus>
+        </div>
+        <div class="mb-4">
+          <label class="form-label" for="password">Password</label>
+          <input type="password" class="form-control" id="password" name="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg w-100">Sign in</button>
+      </form>
+
+      <p class="text-center mt-4 mb-0 small text-muted">
+        No account? <a href="{{ url_for('auth.register') }}" class="link-auth">Create one</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

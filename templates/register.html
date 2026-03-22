@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register — SLYouTubeBoost</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/theme.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-container">
+  <div class="card auth-card">
+    <div class="card-body">
+      <h2 class="mb-2">Create account</h2>
+      <p class="text-muted mb-4">Username (3+ chars) and password (8+ chars).</p>
+
+      {% if error %}
+      <div class="alert alert-danger text-start small mb-3" role="alert">{{ error }}</div>
+      {% endif %}
+
+      <form action="{{ url_for('auth.register') }}" method="post">
+        <div class="mb-3">
+          <label class="form-label" for="username">Username</label>
+          <input type="text" class="form-control" id="username" name="username" autocomplete="username" required autofocus minlength="3">
+        </div>
+        <div class="mb-4">
+          <label class="form-label" for="password">Password</label>
+          <input type="password" class="form-control" id="password" name="password" autocomplete="new-password" required minlength="8">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg w-100">Register</button>
+      </form>
+
+      <p class="text-center mt-4 mb-0 small text-muted">
+        Already have an account? <a href="{{ url_for('auth.login') }}" class="link-auth">Sign in</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

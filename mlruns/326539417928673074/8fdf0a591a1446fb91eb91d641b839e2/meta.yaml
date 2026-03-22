@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/L4S1/ML/Assignment/impl/mlruns/326539417928673074/8fdf0a591a1446fb91eb91d641b839e2/artifacts
+end_time: 1774183875633
+entry_point_name: ''
+experiment_id: '326539417928673074'
+lifecycle_stage: active
+run_id: 8fdf0a591a1446fb91eb91d641b839e2
+run_name: best_LogisticRegression
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1774183810384
+status: 3
+tags: []
+user_id: User
